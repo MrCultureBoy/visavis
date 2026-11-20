@@ -98,6 +98,7 @@
     if (!donnees.son) return;
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === 'suspended' && audio.resume) audio.resume();
       var t0 = audio.currentTime + 0.01;
       [[2637, 0], [3322, 0.012], [5274, 0.004]].forEach(function (p, i) {
         var o = audio.createOscillator(), g = audio.createGain();
@@ -110,6 +111,33 @@
       });
     } catch (e) {}
   }
+  /* Un petit « tic » à chaque appui, et deux notes qui descendent quand les réponses diffèrent
+     (demande d'Elal, 20/11). Synthétisés aussi, coupés par le même bouton 🔈. */
+  function bip(notes, type, volume) {
+    if (!donnees.son) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === 'suspended' && audio.resume) audio.resume();
+      var t = audio.currentTime + 0.005;
+      notes.forEach(function (n) {
+        var o = audio.createOscillator(), g = audio.createGain();
+        o.type = type; o.frequency.setValueAtTime(n[0], t + n[2]);
+        if (n[3]) o.frequency.exponentialRampToValueAtTime(n[3], t + n[2] + n[1]);
+        g.gain.setValueAtTime(0, t + n[2]);
+        g.gain.linearRampToValueAtTime(volume, t + n[2] + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + n[2] + n[1]);
+        o.connect(g); g.connect(audio.destination);
+        o.start(t + n[2]); o.stop(t + n[2] + n[1] + 0.05);
+      });
+    } catch (e) {}
+  }
+  function tic() { bip([[1250, 0.045, 0, 900]], 'sine', 0.05); }
+  function differents() { bip([[392, 0.22, 0, 370], [294, 0.38, 0.17, 262]], 'triangle', 0.11); }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest && e.target.closest('button, .bouton, a.bouton');
+    if (b && !b.disabled && b.id !== 'son') tic();
+  }, true);
+
   function majSon() {
     var b = document.getElementById('son');
     b.textContent = donnees.son ? '🔈' : '🔇';
@@ -144,8 +172,12 @@
       defiReussi: false
     };
   }
-  // Le premier à répondre change à chaque question ; on fait le tour de la table.
-  function joueurDuTour(decalage) { var k = partie.joueurs.length; return (partie.i + partie.tour + (decalage || 0) + k) % k; }
+  // Le premier à répondre change à chaque question ; on fait le tour de la table. À deux, c'est la
+  // personne en face qui ouvre (demande d'Elal, 20/11) : celui qui tient le téléphone le lui tend.
+  function joueurDuTour(decalage) {
+    var k = partie.joueurs.length, depart = partie.groupe ? 0 : 1;
+    return (partie.i + partie.tour + depart + (decalage || 0) + k) % k;
+  }
   function nom(j) { return partie.joueurs[j]; }
   function personnesDuCarnet() { return M.personnes(donnees.parties); }
 
@@ -203,7 +235,7 @@
       donnees.moi = a; ecrire();
       nouvellePartie([a, b]);
       tchin(false);
-      ecranQuestion();
+      ecranTendre();
     }
     var form = h('form', { class: 'ecran', onsubmit: partir }, [
       h('div', { class: 'surtitre', texte: T('Qui trinque ?') }),
@@ -311,6 +343,16 @@
     }
   }
 
+  // À deux, avant la première question : celui qui a saisi les prénoms tend le téléphone en face.
+  function ecranTendre() {
+    var x = nom(joueurDuTour());
+    montrer('cache', [h('div', { class: 'cache' }, [
+      h('div', { class: 'grand', 'aria-hidden': 'true', texte: '🥂' }),
+      h('h2', { texte: T('Passe le téléphone à {x}', { x: x }) }),
+      h('button', { class: 'bouton or', type: 'button', 'data-focus': '', texte: T('C’est moi, {x}', { x: x }), onclick: ecranQuestion })
+    ])]);
+  }
+
   function ecranCache() {
     var suivant = joueurDuTour();
     montrer('cache', [h('div', { class: 'cache' }, [
@@ -350,7 +392,7 @@
       h('button', { class: 'bouton or', type: 'button', 'data-focus': '', texte: derniere ? T('Le défi en vrai') : T('Question suivante'), onclick: suite })
     ]);
     if (!partie.groupe) requestAnimationFrame(function () { requestAnimationFrame(function () { scene.classList.add('vue'); }); });
-    setTimeout(function () { if (enPhase) tchin(true); }, 420);
+    setTimeout(function () { if (enPhase) tchin(true); else differents(); }, 420);
   }
   function blocMiroir(q, m) {
     function ligne(qui, devine, vrai) {
