@@ -132,7 +132,42 @@
     } catch (e) {}
   }
   function tic() { bip([[1250, 0.045, 0, 900]], 'sine', 0.05); }
-  function differents() { bip([[392, 0.22, 0, 370], [294, 0.38, 0.17, 262]], 'triangle', 0.11); }
+  function differents() {
+    // Un petit « bzz » en plus des deux notes (dans l'app : la vibration « attention » de l'iPhone).
+    try { if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(120); } catch (e) {}
+    tromboneTriste();
+  }
+  // « Wah wah wah waaah » : quatre notes qui descendent d'un demi-ton, la dernière tenue avec vibrato
+  // (demande d'Elal, 20/11 : « un bruit en termes de musique »). Cuivre synthétisé : dent de scie filtrée.
+  function tromboneTriste() {
+    if (!donnees.son) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === 'suspended' && audio.resume) audio.resume();
+      var t = audio.currentTime + 0.01;
+      var sortie = audio.createGain(); sortie.gain.value = 0.2; sortie.connect(audio.destination);
+      [[392, 0, 0.3], [370, 0.32, 0.3], [349, 0.64, 0.3], [330, 0.96, 0.85]].forEach(function (n, i) {
+        var o = audio.createOscillator(), f = audio.createBiquadFilter(), g = audio.createGain();
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(n[0] * 1.02, t + n[1]);
+        o.frequency.exponentialRampToValueAtTime(n[0], t + n[1] + 0.08);   // la note « tombe » en place
+        f.type = 'lowpass'; f.Q.value = 6;
+        f.frequency.setValueAtTime(500, t + n[1]);
+        f.frequency.linearRampToValueAtTime(1500, t + n[1] + 0.1);          // le « wah » qui s'ouvre
+        f.frequency.linearRampToValueAtTime(600, t + n[1] + n[2]);
+        g.gain.setValueAtTime(0, t + n[1]);
+        g.gain.linearRampToValueAtTime(0.5, t + n[1] + 0.03);
+        g.gain.setValueAtTime(0.5, t + n[1] + n[2] - 0.08);
+        g.gain.linearRampToValueAtTime(0, t + n[1] + n[2]);
+        if (i === 3) {   // vibrato sur la dernière
+          var lfo = audio.createOscillator(), prof = audio.createGain();
+          lfo.frequency.value = 5.5; prof.gain.value = 7;
+          lfo.connect(prof); prof.connect(o.frequency); lfo.start(t + n[1] + 0.15); lfo.stop(t + n[1] + n[2]);
+        }
+        o.connect(f); f.connect(g); g.connect(sortie);
+        o.start(t + n[1]); o.stop(t + n[1] + n[2] + 0.05);
+      });
+    } catch (e) {}
+  }
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('button, .bouton, a.bouton');
     if (b && !b.disabled && b.id !== 'son') tic();
@@ -474,7 +509,7 @@
     var autres = partie.joueurs.slice(1);
     var mm = partie.manches[partie.miroirI];
     partie.lecture = mm && mm.da !== undefined ? (mm.da === mm.b ? 1 : 0) + (mm.db === mm.a ? 1 : 0) : null;
-    donnees.parties.unshift({ n: partie.n, archive: partie.archive || undefined, paquet: partie.paquet, groupe: partie.groupe ? partie.joueurs.length : undefined, quand: new Date().toISOString(), avec: autres.join(', '), avecs: partie.groupe ? autres : undefined, miroir: partie.lecture === null ? undefined : partie.lecture, score: s, titre: t.titre, defi: reussi, grille: g });
+    donnees.parties.unshift({ n: partie.n, archive: partie.archive || undefined, paquet: partie.paquet, groupe: partie.groupe ? partie.joueurs.length : undefined, quand: new Date().toISOString(), avec: autres.join(', '), avecs: partie.groupe ? autres : undefined, miroir: partie.lecture === null ? undefined : partie.lecture, score: s, compat: M.compatibilite(partie.manches, reussi).pourcent, titre: t.titre, defi: reussi, grille: g });
     ecrire();
     partie.nouveaux = M.succes(donnees.parties).filter(function (id) { return avant.indexOf(id) < 0; });
     if (s >= 4 || reussi || partie.nouveaux.length) tchin(true);
@@ -598,6 +633,21 @@
     ]);
   }
 
+  // Le score de compatibilité (moteur.js), avec sa barre qui se remplit (demande d'Elal, 20/11).
+  function blocCompat() {
+    var c = M.compatibilite(partie.manches, partie.defiReussi);
+    var remplie = h('i', {});
+    var bloc = h('div', { class: 'compat', role: 'img', 'aria-label': T('Compatibilité') + ' : ' + T('{p} %', { p: c.pourcent }) + ' · ' + T(c.palier) }, [
+      h('div', { class: 'haut' }, [
+        h('div', {}, [h('div', { class: 'surtitre', texte: T('Compatibilité') }), h('div', { class: 'palier', texte: T(c.palier) })]),
+        h('div', { class: 'chiffre-compat', texte: T('{p} %', { p: c.pourcent }) })
+      ]),
+      h('div', { class: 'barre', 'aria-hidden': 'true' }, [remplie])
+    ]);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { remplie.style.width = c.pourcent + '%'; }); });
+    return bloc;
+  }
+
   function ecranResultat(s, t, g) {
     var note = h('p', { class: 'note', 'aria-live': 'polite' });
     var apercu = h('div', { class: 'apercu', hidden: '' });
@@ -647,6 +697,7 @@
       h('h2', { texte: T(t.titre) }),
       h('p', { class: 'doux', texte: T(t.mot) }),
       h('div', { class: 'grille', 'aria-label': T('Grille du résultat'), texte: g }),
+      blocCompat(),
       h('div', { class: 'rangee' }, [
         h('button', { class: 'bouton or', type: 'button', 'data-focus': '', texte: T('Image pour ta story'), onclick: story }),
         h('button', { class: 'bouton clair', type: 'button', texte: T('Texte'), onclick: partager })

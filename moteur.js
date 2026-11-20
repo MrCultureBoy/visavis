@@ -89,6 +89,20 @@
     return s;
   }
 
+  /* Le score de compatibilité, sur 100 (demande d'Elal, 20/11), en fin de partie.
+     À deux : 16 par question en phase (80), 7 par devinette juste au miroir (14), 6 pour le défi réussi.
+     En groupe (pas de miroir) : 18 par question en phase (90), 10 pour le défi. Rend { pourcent, palier }. */
+  var PALIERS = [[90, 'Âmes jumelles'], [70, 'Très compatibles'], [45, 'Bonne entente'], [0, 'Tout à découvrir']];
+  function compatibilite(manches, defiReussi) {
+    var groupe = manches.some(function (m) { return m.choix && m.choix.length > 2; });
+    var p = score(manches) * (groupe ? 18 : 16) + (defiReussi ? (groupe ? 10 : 6) : 0);
+    manches.forEach(function (m) {
+      if (m.da !== undefined) p += 7 * ((m.da === m.b ? 1 : 0) + (m.db === m.a ? 1 : 0));
+    });
+    p = Math.max(0, Math.min(100, p));
+    for (var i = 0; i < PALIERS.length; i++) if (p >= PALIERS[i][0]) return { pourcent: p, palier: PALIERS[i][1] };
+  }
+
   /* En groupe : le duo qui a le plus souvent répondu pareil, et la personne la moins souvent d'accord. */
   function bilanGroupe(manches, k) {
     var paire = { i: 0, j: 1, n: -1 }, accords = [];
@@ -243,6 +257,7 @@
     defiDuJour: defiDuJour,
     melange: melange,
     score: score,
+    compatibilite: compatibilite,
     titre: titre,
     grille: grille,
     serie: serie,

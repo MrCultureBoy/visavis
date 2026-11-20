@@ -5,6 +5,12 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   var en = {
+    'Compatibilité': 'Compatibility',
+    '{p} %': '{p}%',
+    'Âmes jumelles': 'Twin souls',
+    'Très compatibles': 'Very compatible',
+    'Bonne entente': 'Getting along well',
+    'Tout à découvrir': 'Everything to discover',
     'Encore une question': 'One more question',
     'Encore une question · sans score': 'One more question · no score',
     'Chacun répond à voix haute, puis défendez votre choix.': 'Each of you answers out loud, then defend your choice.',

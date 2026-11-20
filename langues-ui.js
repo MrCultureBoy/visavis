@@ -187,7 +187,12 @@
   "Retour": "Volver",
   "Ils veulent rejouer chez eux ?": "¿Quieren volver a jugar en casa?",
   "{b} veut rejouer chez lui ou chez elle ?": "¿{b} quiere volver a jugar en casa?",
-  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Haz escanear este código: Vis-à-vis se abre en su teléfono. Toca para ampliarlo."
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Haz escanear este código: Vis-à-vis se abre en su teléfono. Toca para ampliarlo.",
+  "Compatibilité": "Compatibilidad",
+  "{p} %": "{p} %",
+  "Très compatibles": "Muy compatibles",
+  "Bonne entente": "Buena sintonía",
+  "Tout à découvrir": "Todo por descubrir"
  },
  "de": {
   ", à toi": ", du bist dran",
@@ -371,7 +376,12 @@
   "Retour": "Zurück",
   "Ils veulent rejouer chez eux ?": "Wollen sie zu Hause weiterspielen?",
   "{b} veut rejouer chez lui ou chez elle ?": "Will {b} zu Hause weiterspielen?",
-  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Lass diesen Code scannen: Vis-à-vis öffnet sich auf dem Handy. Tippen zum Vergrößern."
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Lass diesen Code scannen: Vis-à-vis öffnet sich auf dem Handy. Tippen zum Vergrößern.",
+  "Compatibilité": "Kompatibilität",
+  "{p} %": "{p} %",
+  "Très compatibles": "Sehr kompatibel",
+  "Bonne entente": "Gutes Einvernehmen",
+  "Tout à découvrir": "Alles zu entdecken"
  },
  "ar": {
   ", à toi": "، دورك",
@@ -555,7 +565,12 @@
   "Retour": "رجوع",
   "Ils veulent rejouer chez eux ?": "هل يريدون اللعب مجددًا في منازلهم؟",
   "{b} veut rejouer chez lui ou chez elle ?": "هل يريد {b} اللعب مجددًا في البيت؟",
-  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "اطلب مسح هذا الرمز: يُفتح Vis-à-vis على هاتفه. المس لتكبيره."
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "اطلب مسح هذا الرمز: يُفتح Vis-à-vis على هاتفه. المس لتكبيره.",
+  "Compatibilité": "التوافق",
+  "{p} %": "{p}٪",
+  "Très compatibles": "متوافقان جدًا",
+  "Bonne entente": "تفاهم جيد",
+  "Tout à découvrir": "كل شيء لاكتشافه"
  }
 };
 });
