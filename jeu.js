@@ -68,7 +68,7 @@
     (enfants || []).forEach(function (c) { if (c != null) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
     return el;
   }
-  var ECRANS = ['accueil', 'prenoms', 'question', 'cache', 'revele', 'defi', 'resultat', 'carnet', 'regles', 'archives', 'paquets', 'encore'];
+  var ECRANS = ['accueil', 'prenoms', 'question', 'cache', 'revele', 'defi', 'resultat', 'carnet', 'regles', 'archives', 'paquets', 'encore', 'inviter'];
   function montrer(nom, contenu) {
     ECRANS.forEach(function (e) {
       var s = document.getElementById('ecran-' + e);
@@ -180,6 +180,7 @@
         h('button', { class: 'bouton clair', type: 'button', texte: T('Comment ça marche'), onclick: ecranRegles }),
         h('button', { class: 'bouton clair', type: 'button', texte: T('Archives'), onclick: ecranArchives })
       ]),
+      h('button', { class: 'bouton clair', type: 'button', texte: T('📲 Inviter avec un QR code'), onclick: function () { ecranInviter(ecranAccueil); } }),
       h('button', { class: 'plus', type: 'button', onclick: ecranPaquets }, [
         h('div', { class: 'surtitre', texte: T('Paquets à thème') }),
         h('div', { class: 'noms' }, PAQUETS.slice(0, 6).map(function (x) { return h('span', { class: 'pastille', texte: x.em + ' ' + dansLaLangue(x.nom) }); })
@@ -438,9 +439,47 @@
     ecranResultat(s, t, g);
   }
 
+  // L'adresse publique vient d'adresse.js (la seule adresse du code) ; sinon celle de la page si elle est publique.
   function lienPublic() {
+    if (window.TchinAdresse) return window.TchinAdresse;
     var l = location.href.split('#')[0];
-    return /^https?:/.test(l) && !/claudeusercontent|claude\.ai/.test(l) ? l : '';
+    return /^https?:/.test(l) && !/claudeusercontent|claude\.ai|localhost|127\.0\.0\.1/.test(l) ? l : '';
+  }
+
+  /* ---------- QR code d'invitation : toujours noir sur blanc, avec sa marge, pour se scanner partout ---------- */
+  function canvasQR(texte, cote) {
+    var qr = window.qrcode(0, 'M'); qr.addData(texte); qr.make();
+    var n = qr.getModuleCount(), marge = 4, total = n + marge * 2;
+    var echelle = Math.max(1, Math.floor(cote * (window.devicePixelRatio || 1) / total));
+    var c = document.createElement('canvas'); c.width = c.height = total * echelle;
+    var x = c.getContext('2d');
+    x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, c.width, c.height);
+    x.fillStyle = '#0C1813';
+    for (var r = 0; r < n; r++) for (var k = 0; k < n; k++) if (qr.isDark(r, k)) x.fillRect((k + marge) * echelle, (r + marge) * echelle, echelle, echelle);
+    c.className = 'qr'; c.setAttribute('role', 'img'); c.setAttribute('aria-label', T('QR code vers {l}', { l: texte }));
+    c.style.width = c.style.height = cote + 'px';
+    return c;
+  }
+  function blocQR(cote) {
+    var lien = lienPublic();
+    if (!lien || !window.qrcode) return null;
+    return h('div', { class: 'bloc-qr' }, [canvasQR(lien, cote), h('div', { class: 'lien-qr', texte: lien.replace(/^https?:\/\//, '').replace(/\/$/, '') })]);
+  }
+  function ecranInviter(retour) {
+    var lien = lienPublic();
+    var note = h('p', { class: 'note', 'aria-live': 'polite' });
+    montrer('inviter', [
+      h('div', { class: 'surtitre', texte: T('Inviter') }),
+      h('h2', { texte: T('Fais scanner ce code à la personne en face de toi') }),
+      h('p', { class: 'doux', texte: T('Elle ouvre Vis-à-vis sur son téléphone, sans compte et sans rien installer. Demain, elle pourra lancer le défi du jour avec quelqu’un d’autre.') }),
+      lien ? blocQR(Math.min(300, window.innerWidth - 80)) : h('div', { class: 'vide', texte: T('Le lien public n’est pas encore disponible ici.') }),
+      lien ? h('button', { class: 'bouton or', type: 'button', 'data-focus': '', texte: T('Copier le lien'), onclick: function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lien).then(function () { note.textContent = T('Lien copié.'); }, function () { note.textContent = lien; });
+        else note.textContent = lien;
+      } }) : null,
+      note,
+      h('button', { class: 'bouton clair', type: 'button', texte: T('Retour'), onclick: function () { (retour || ecranAccueil)(); } })
+    ]);
   }
   function texteAPartager(s, t, g) {
     var lien = lienPublic();
@@ -572,6 +611,11 @@
       ]),
       note,
       apercu,
+      lienPublic() ? h('button', { class: 'invitation', type: 'button', onclick: function () { ecranInviter(function () { ecranResultat(s, t, g); }); } }, [
+        blocQR(96),
+        h('div', {}, [h('b', { texte: partie.groupe ? T('Ils veulent rejouer chez eux ?') : T('{b} veut rejouer chez lui ou chez elle ?', { b: partie.b }) }),
+          h('small', { texte: T('Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.') })])
+      ]) : null,
       h('button', { class: 'bouton', type: 'button', texte: T('Encore une question'), onclick: ecranEncore }),
       h('button', { class: 'bouton clair', type: 'button', texte: T('Rejouer avec quelqu’un d’autre'), onclick: ecranPrenoms }),
       partie.nouveaux && partie.nouveaux.length ? h('div', { class: 'nouveaux' }, [h('div', { class: 'surtitre', texte: partie.nouveaux.length > 1 ? T('Nouveaux succès') : T('Nouveau succès') })].concat(partie.nouveaux.map(pastilleSucces))) : null,

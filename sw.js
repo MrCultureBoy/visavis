@@ -1,6 +1,6 @@
 /* Tchin — fonctionne hors ligne : on garde les fichiers du jeu, et le réseau passe en premier quand il est là. */
-var VERSION = 'tchin-v3';
-var FICHIERS = ['./', 'index.html', 'moteur.js', 'contenu.js', 'contenu-en.js', 'contenu-es.js', 'contenu-de.js', 'contenu-ar.js', 'contenu-paquets.js', 'langues.js', 'langues-ui.js', 'jeu.js', 'manifest.webmanifest',
+var VERSION = 'tchin-v4';
+var FICHIERS = ['./', 'index.html', 'moteur.js', 'contenu.js', 'contenu-en.js', 'contenu-es.js', 'contenu-de.js', 'contenu-ar.js', 'contenu-paquets.js', 'langues.js', 'langues-ui.js', 'vendor/qrcode.js', 'adresse.js', 'jeu.js', 'manifest.webmanifest',
   'icones/icone-192.png', 'icones/icone-512.png', 'icones/apple-touch-icon.png', 'icones/favicon.png'];
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(FICHIERS); })); self.skipWaiting(); });
 self.addEventListener('activate', function (e) {

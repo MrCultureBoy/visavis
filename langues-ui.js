@@ -175,7 +175,19 @@
   "Vis-à-vis joués": "Vis-à-vis jugados",
   "meilleure série": "mejor racha",
   "meilleur score": "mejor puntuación",
-  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "Quien más conecta contigo: {x} ({m}/5 de media)"
+  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "Quien más conecta contigo: {x} ({m}/5 de media)",
+  "📲 Inviter avec un QR code": "📲 Invitar con un código QR",
+  "QR code vers {l}": "Código QR hacia {l}",
+  "Inviter": "Invitar",
+  "Fais scanner ce code à la personne en face de toi": "Haz que la persona frente a ti escanee este código",
+  "Elle ouvre Vis-à-vis sur son téléphone, sans compte et sans rien installer. Demain, elle pourra lancer le défi du jour avec quelqu’un d’autre.": "Vis-à-vis se abre en su teléfono, sin cuenta y sin instalar nada. Mañana podrá lanzar el reto del día con otra persona.",
+  "Le lien public n’est pas encore disponible ici.": "El enlace público aún no está disponible aquí.",
+  "Copier le lien": "Copiar el enlace",
+  "Lien copié.": "Enlace copiado.",
+  "Retour": "Volver",
+  "Ils veulent rejouer chez eux ?": "¿Quieren volver a jugar en casa?",
+  "{b} veut rejouer chez lui ou chez elle ?": "¿{b} quiere volver a jugar en casa?",
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Haz escanear este código: Vis-à-vis se abre en su teléfono. Toca para ampliarlo."
  },
  "de": {
   ", à toi": ", du bist dran",
@@ -347,7 +359,19 @@
   "Vis-à-vis joués": "gespielte Vis-à-vis",
   "meilleure série": "beste Serie",
   "meilleur score": "beste Punktzahl",
-  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "Am meisten im Gleichklang mit dir: {x} ({m}/5 im Schnitt)"
+  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "Am meisten im Gleichklang mit dir: {x} ({m}/5 im Schnitt)",
+  "📲 Inviter avec un QR code": "📲 Mit QR-Code einladen",
+  "QR code vers {l}": "QR-Code zu {l}",
+  "Inviter": "Einladen",
+  "Fais scanner ce code à la personne en face de toi": "Lass die Person dir gegenüber diesen Code scannen",
+  "Elle ouvre Vis-à-vis sur son téléphone, sans compte et sans rien installer. Demain, elle pourra lancer le défi du jour avec quelqu’un d’autre.": "Vis-à-vis öffnet sich auf dem Handy, ohne Konto und ohne Installation. Morgen kann die Person die Tages-Challenge mit jemand anderem starten.",
+  "Le lien public n’est pas encore disponible ici.": "Der öffentliche Link ist hier noch nicht verfügbar.",
+  "Copier le lien": "Link kopieren",
+  "Lien copié.": "Link kopiert.",
+  "Retour": "Zurück",
+  "Ils veulent rejouer chez eux ?": "Wollen sie zu Hause weiterspielen?",
+  "{b} veut rejouer chez lui ou chez elle ?": "Will {b} zu Hause weiterspielen?",
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "Lass diesen Code scannen: Vis-à-vis öffnet sich auf dem Handy. Tippen zum Vergrößern."
  },
  "ar": {
   ", à toi": "، دورك",
@@ -519,7 +543,19 @@
   "Vis-à-vis joués": "Vis-à-vis لُعبت",
   "meilleure série": "أفضل سلسلة",
   "meilleur score": "أفضل نتيجة",
-  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "الأكثر انسجاماً معك: {x} ({m}/5 في المتوسط)"
+  "Le plus en phase avec toi : {x} ({m}/5 en moyenne)": "الأكثر انسجاماً معك: {x} ({m}/5 في المتوسط)",
+  "📲 Inviter avec un QR code": "📲 ادعُ برمز QR",
+  "QR code vers {l}": "رمز QR إلى {l}",
+  "Inviter": "دعوة",
+  "Fais scanner ce code à la personne en face de toi": "اطلب من الشخص الذي أمامك مسح هذا الرمز",
+  "Elle ouvre Vis-à-vis sur son téléphone, sans compte et sans rien installer. Demain, elle pourra lancer le défi du jour avec quelqu’un d’autre.": "يُفتح Vis-à-vis على هاتفه، بلا حساب ولا تثبيت. وغدًا يمكنه بدء تحدي اليوم مع شخص آخر.",
+  "Le lien public n’est pas encore disponible ici.": "الرابط العام غير متاح هنا بعد.",
+  "Copier le lien": "نسخ الرابط",
+  "Lien copié.": "تم نسخ الرابط.",
+  "Retour": "رجوع",
+  "Ils veulent rejouer chez eux ?": "هل يريدون اللعب مجددًا في منازلهم؟",
+  "{b} veut rejouer chez lui ou chez elle ?": "هل يريد {b} اللعب مجددًا في البيت؟",
+  "Fais scanner ce code : Vis-à-vis s’ouvre sur son téléphone. Touche pour l’agrandir.": "اطلب مسح هذا الرمز: يُفتح Vis-à-vis على هاتفه. المس لتكبيره."
  }
 };
 });

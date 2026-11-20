@@ -173,6 +173,13 @@ textarea.repli { width: 100%; min-height: 120px; font: 500 14px var(--texte); bo
 .ligne .g { font-size: 18px; letter-spacing: 2px; text-align: right; }
 .ligne .meta { grid-column: 1 / -1; font-size: 13px; color: var(--doux); }
 button.ligne.archive { appearance: none; background: none; border: 0; border-bottom: 1px solid var(--trait); color: var(--encre); text-align: left; font: inherit; cursor: pointer; width: 100%; }
+.bloc-qr { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.bloc-qr .qr { border-radius: 12px; image-rendering: pixelated; }
+.lien-qr { font-size: 13px; color: var(--doux); user-select: all; overflow-wrap: anywhere; text-align: center; }
+button.invitation { appearance: none; display: flex; gap: 14px; align-items: center; text-align: start; width: 100%; padding: 12px; border-radius: 16px; border: 1px dashed var(--or-vif); background: var(--carte); color: var(--encre); font: inherit; cursor: pointer; }
+button.invitation .bloc-qr .lien-qr { display: none; }
+button.invitation b { display: block; font: 700 16px var(--affiche); }
+button.invitation small { display: block; color: var(--doux); font-size: 13px; line-height: 1.35; }
 .vide { padding: 22px; text-align: center; color: var(--doux); border: 1px dashed var(--trait); border-radius: 16px; }
 
 .succes { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--trait); border-radius: 14px; background: var(--carte); min-width: 0; }
@@ -236,6 +243,7 @@ button.plus { appearance: none; background: none; color: var(--encre); text-alig
   <section class="ecran" id="ecran-archives" hidden></section>
   <section class="ecran" id="ecran-paquets" hidden></section>
   <section class="ecran" id="ecran-encore" hidden></section>
+  <section class="ecran" id="ecran-inviter" hidden></section>
 </main>
 <script src="moteur.js"></script>
 <script src="contenu.js"></script>
@@ -246,6 +254,8 @@ button.plus { appearance: none; background: none; color: var(--encre); text-alig
 <script src="contenu-paquets.js"></script>
 <script src="langues.js"></script>
 <script src="langues-ui.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="adresse.js"></script>
 <script src="jeu.js"></script>
 </body>
 </html>
