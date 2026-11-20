@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mrcultureboy.github.io/visavis/sitemap.xml

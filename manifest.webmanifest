@@ -1,0 +1,16 @@
+{
+  "name": "Vis-à-vis",
+  "short_name": "Vis-à-vis",
+  "description": "Le défi du jour à deux : trois minutes pour vraiment se parler.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0C1813",
+  "theme_color": "#0C1813",
+  "icons": [
+    { "src": "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

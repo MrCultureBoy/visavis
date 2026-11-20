@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vis-à-vis</title>
+<meta name="description" content="Le défi du jour à deux : cinq questions en secret, un défi en vrai, et trois minutes pour vraiment se parler. Sans compte, sur un seul téléphone.">
+<link rel="canonical" href="https://mrcultureboy.github.io/visavis/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vis-à-vis : trois minutes pour vraiment se parler">
+<meta property="og:description" content="Le défi du jour à deux : cinq questions en secret, un défi en vrai, et trois minutes pour vraiment se parler. Sans compte, sur un seul téléphone.">
+<meta property="og:url" content="https://mrcultureboy.github.io/visavis/">
+<meta property="og:image" content="https://mrcultureboy.github.io/visavis/icones/apercu.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<!-- installable (retiré de la page claude.ai par outils/artefact.py) -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icones/apple-touch-icon.png">
+<link rel="icon" href="icones/favicon.png">
+<meta name="theme-color" content="#0C1813">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Vis-à-vis">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- /installable -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Mise en page : une seule colonne façon carte de bar, un écran à la fois, pensée pour un téléphone tenu à deux. */
+:root {
+  --fond: #E9EDE6;      /* craie des crayères, un peu verte */
+  --carte: #F6F8F3;
+  --encre: #12231C;     /* verre de bouteille */
+  --doux: #56675E;
+  --or: #9C7216;        /* feuille d'or du muselet, lisible sur la craie */
+  --or-vif: #D9AE4F;
+  --rose: #C46F64;      /* « différents » */
+  --trait: #CDD4CA;
+  --sur-or: #12231C;
+  --affiche: "Bricolage Grotesque", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  --texte: "Figtree", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #0C1813; --carte: #13231D; --encre: #E7ECE4; --doux: #94A59B;
+    --or: #DDB45A; --or-vif: #E8C46E; --rose: #E29A90; --trait: #23382F; --sur-or: #0C1813;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #0C1813; --carte: #13231D; --encre: #E7ECE4; --doux: #94A59B;
+  --or: #DDB45A; --or-vif: #E8C46E; --rose: #E29A90; --trait: #23382F; --sur-or: #0C1813;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+.barre .rangee > * { flex: none; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--fond); color: var(--encre);
+  font: 400 16px/1.5 var(--texte);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+.app { max-width: 460px; margin: 0 auto; min-height: 100%; display: flex; flex-direction: column; padding-block: 18px 28px; gap: 18px; }
+
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.marque { font: 800 26px/1 var(--affiche); letter-spacing: -0.02em; background: none; border: 0; color: var(--encre); padding: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.marque .verres { font-size: 22px; }
+select.langue { appearance: none; -webkit-appearance: none; padding: 0 12px; max-width: 120px; text-overflow: ellipsis; }
+.icone { background: none; border: 1px solid var(--trait); color: var(--doux); border-radius: 999px; min-width: 40px; height: 40px; padding: 0 12px; font: 600 14px var(--texte); cursor: pointer; }
+
+.ecran { display: flex; flex-direction: column; gap: 18px; flex: 1; }
+.surtitre { font: 600 12px/1.2 var(--texte); letter-spacing: 0.12em; text-transform: uppercase; color: var(--doux); }
+h1, h2 { font-family: var(--affiche); margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+h1 { font-size: clamp(34px, 9vw, 46px); line-height: 1.02; font-weight: 800; }
+h2 { font-size: clamp(26px, 7vw, 32px); line-height: 1.1; font-weight: 700; }
+p { margin: 0; }
+.doux { color: var(--doux); }
+
+.ticket { background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.ticket-tete { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.numero { font: 800 56px/0.9 var(--affiche); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.compte { font: 500 14px var(--texte); color: var(--doux); font-variant-numeric: tabular-nums; text-align: right; }
+.chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.chiffre { display: flex; flex-direction: column; gap: 2px; }
+.chiffre b { font: 700 24px/1 var(--affiche); font-variant-numeric: tabular-nums; }
+.chiffre span { font-size: 12px; color: var(--doux); }
+
+.bouton { appearance: none; border: 0; border-radius: 14px; padding: 16px 18px; font: 700 18px/1.2 var(--affiche); cursor: pointer; background: var(--encre); color: var(--fond); width: 100%; transition: transform .12s ease; }
+.bouton:active { transform: scale(0.98); }
+.bouton.or { background: var(--or-vif); color: var(--sur-or); }
+.bouton.clair { background: transparent; color: var(--encre); border: 1px solid var(--trait); font-weight: 600; font-size: 16px; }
+.rangee { display: flex; gap: 10px; }
+.rangee > * { flex: 1; min-width: 0; }
+:focus-visible { outline: 3px solid var(--or-vif); outline-offset: 2px; }
+
+.champ { display: flex; flex-direction: column; gap: 6px; }
+.champ label { font-size: 13px; color: var(--doux); font-weight: 600; }
+.champ input { font: 600 20px var(--affiche); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); width: 100%; }
+
+.progres { display: flex; gap: 6px; }
+.progres i { flex: 1; height: 5px; border-radius: 3px; background: var(--trait); }
+.progres i.fait { background: var(--or-vif); }
+.progres i.diff { background: var(--rose); }
+.qui { display: inline-flex; align-items: center; gap: 8px; font: 600 15px var(--texte); color: var(--doux); }
+.qui b { color: var(--encre); }
+.secret { font-size: 12px; border: 1px dashed var(--trait); border-radius: 999px; padding: 2px 10px; }
+.reponses { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.reponse { appearance: none; text-align: left; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); border-radius: 16px; padding: 14px; min-height: 112px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; cursor: pointer; font: 600 16px/1.25 var(--texte); transition: transform .12s ease, border-color .12s ease; }
+.reponse .em { font-size: 30px; line-height: 1; }
+.reponse span:last-child { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }
+.reponse:hover { border-color: var(--or); }
+.reponse:active { transform: scale(0.97); }
+.reponse.fixe { cursor: default; min-height: 0; }
+.reponse.fixe:hover { border-color: var(--trait); }
+.reponse.fixe:active { transform: none; }
+
+.cache { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 16px; background: var(--encre); color: var(--fond); border-radius: 24px; padding: 32px 22px; }
+.cache h2 { color: var(--fond); }
+.cache .bouton { background: var(--or-vif); color: var(--sur-or); }
+.cache .grand { font-size: 64px; line-height: 1; }
+
+/* Le moment Tchin : les deux bulles avancent l'une vers l'autre ; en phase, elles se touchent. */
+.scene { position: relative; height: 200px; }
+.bulle { position: absolute; top: 18px; width: 46%; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; transition: transform .7s cubic-bezier(.2,.9,.2,1.15); }
+.bulle .rond { width: 104px; height: 104px; border-radius: 50%; display: grid; place-items: center; font-size: 46px; background: var(--carte); border: 2px solid var(--trait); }
+.bulle .nom { font: 600 13px var(--texte); color: var(--doux); }
+.bulle .rep { font: 600 15px/1.2 var(--texte); }
+.bulle { opacity: 0; }
+.bulle.g { left: 0; transform: translateX(-10%); }
+.bulle.d { right: 0; transform: translateX(10%); }
+.scene.vue .bulle { opacity: 1; transition: transform .7s cubic-bezier(.2,.9,.2,1.15), opacity .3s ease; }
+.scene.vue .bulle.g { transform: translateX(0); }
+.scene.vue .bulle.d { transform: translateX(0); }
+.scene.vue.phase .bulle.g { transform: translateX(24%); }
+.scene.vue.phase .bulle.d { transform: translateX(-24%); }
+.scene.phase .rep { visibility: hidden; }
+.scene.phase .rond { border-color: var(--or-vif); box-shadow: 0 0 0 6px color-mix(in srgb, var(--or-vif) 25%, transparent); }
+.verdict { text-align: center; display: flex; flex-direction: column; gap: 6px; }
+.verdict .mot { font: 800 34px/1 var(--affiche); letter-spacing: -0.02em; }
+.verdict .mot.en-phase { color: var(--or); }
+.verdict .mot.differents { color: var(--rose); }
+.miroir { display: flex; flex-direction: column; gap: 8px; }
+.miroir-ligne { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-radius: 14px; border: 1px dashed var(--trait); }
+.miroir-ligne.juste { border: 1px solid var(--or-vif); }
+.miroir-ligne .em { font-size: 22px; }
+.relance { background: var(--carte); border: 1px solid var(--trait); border-radius: 16px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.relance .em { font-size: 22px; line-height: 1.2; }
+
+.defi-texte { font: 700 24px/1.2 var(--affiche); text-wrap: balance; }
+.minuteur { font: 800 88px/1 var(--affiche); text-align: center; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; }
+.minuteur.fin { color: var(--rose); }
+
+.score { display: flex; align-items: baseline; gap: 10px; }
+.score b { font: 800 96px/0.85 var(--affiche); letter-spacing: -0.05em; color: var(--or); font-variant-numeric: tabular-nums; }
+.score span { font: 700 22px var(--affiche); color: var(--doux); }
+.grille { font-size: 34px; letter-spacing: 4px; }
+.note { font-size: 13px; color: var(--doux); min-height: 1.5em; }
+.apercu { display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+.apercu img { width: min(100%, 300px); aspect-ratio: 9 / 16; border-radius: 18px; border: 1px solid var(--trait); }
+textarea.repli { width: 100%; min-height: 120px; font: 500 14px var(--texte); border-radius: 12px; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); padding: 12px; }
+
+.liste { display: flex; flex-direction: column; border-top: 1px solid var(--trait); }
+.ligne { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 14px 0; border-bottom: 1px solid var(--trait); }
+.ligne .avec { font: 700 18px var(--affiche); min-width: 0; overflow-wrap: anywhere; }
+.ligne .g { font-size: 18px; letter-spacing: 2px; text-align: right; }
+.ligne .meta { grid-column: 1 / -1; font-size: 13px; color: var(--doux); }
+button.ligne.archive { appearance: none; background: none; border: 0; border-bottom: 1px solid var(--trait); color: var(--encre); text-align: left; font: inherit; cursor: pointer; width: 100%; }
+.vide { padding: 22px; text-align: center; color: var(--doux); border: 1px dashed var(--trait); border-radius: 16px; }
+
+.succes { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--trait); border-radius: 14px; background: var(--carte); min-width: 0; }
+.succes .em { font-size: 26px; line-height: 1; }
+.succes b { display: block; font: 700 15px/1.2 var(--affiche); }
+.succes small { display: block; color: var(--doux); font-size: 12.5px; line-height: 1.3; }
+.succes.bloque { opacity: .55; }
+.grille-succes { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-top: 10px; }
+.bloc-succes summary { cursor: pointer; font: 700 16px var(--affiche); }
+.nouveaux { display: flex; flex-direction: column; gap: 8px; }
+.nouveaux .succes { border-color: var(--or-vif); }
+.champs-groupe { display: flex; flex-direction: column; gap: 8px; }
+.champ-groupe { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; }
+.champ-groupe .num { font: 800 18px var(--affiche); color: var(--doux); text-align: center; }
+.champ-groupe input { font: 600 18px var(--affiche); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); width: 100%; min-width: 0; }
+.scene-groupe { display: flex; flex-direction: column; gap: 8px; }
+.groupe-rep { display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: 16px; border: 1px solid var(--trait); background: var(--carte); }
+.groupe-rep.ensemble { border-color: var(--or-vif); }
+.groupe-rep .em { font-size: 30px; line-height: 1; }
+.groupe-rep b { font: 700 16px var(--affiche); }
+.noms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.pastille { font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--fond); border: 1px solid var(--trait); }
+.groupe-rep.ensemble .pastille { border-color: var(--or-vif); }
+.bilan-groupe { display: flex; flex-direction: column; gap: 8px; }
+.plus { border: 1px dashed var(--or); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+button.plus { appearance: none; background: none; color: var(--encre); text-align: left; font: inherit; cursor: pointer; width: 100%; }
+.cartes-paquets { display: flex; flex-direction: column; gap: 10px; }
+.carte-paquet { border: 1px solid var(--trait); background: var(--carte); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.carte-paquet .tete { display: flex; gap: 14px; align-items: center; }
+.carte-paquet .em { font-size: 36px; line-height: 1; }
+.carte-paquet b { display: block; font: 800 22px var(--affiche); }
+.carte-paquet small { color: var(--doux); }
+.plus .surtitre { color: var(--or); }
+.etapes { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bulle, .bouton, .reponse { transition: none; }
+}
+</style>
+</head>
+<body>
+<main class="app" id="app">
+  <header class="barre">
+    <button class="marque" id="vers-accueil" type="button" aria-label="Revenir à l’accueil"><span>Vis-à-vis</span><span class="verres" aria-hidden="true">🥂</span></button>
+    <div class="rangee" style="flex:0 0 auto">
+      <select class="icone langue" id="langue"></select>
+      <button class="icone" id="son" type="button" aria-label="Son">🔈</button>
+      <button class="icone" id="vers-carnet" type="button">Carnet</button>
+    </div>
+  </header>
+
+  <section class="ecran" id="ecran-accueil"></section>
+  <section class="ecran" id="ecran-prenoms" hidden></section>
+  <section class="ecran" id="ecran-question" hidden></section>
+  <section class="ecran" id="ecran-cache" hidden></section>
+  <section class="ecran" id="ecran-revele" hidden></section>
+  <section class="ecran" id="ecran-defi" hidden></section>
+  <section class="ecran" id="ecran-resultat" hidden></section>
+  <section class="ecran" id="ecran-carnet" hidden></section>
+  <section class="ecran" id="ecran-regles" hidden></section>
+  <section class="ecran" id="ecran-archives" hidden></section>
+  <section class="ecran" id="ecran-paquets" hidden></section>
+  <section class="ecran" id="ecran-encore" hidden></section>
+</main>
+<script src="moteur.js"></script>
+<script src="contenu.js"></script>
+<script src="contenu-en.js"></script>
+<script src="contenu-es.js"></script>
+<script src="contenu-de.js"></script>
+<script src="contenu-ar.js"></script>
+<script src="contenu-paquets.js"></script>
+<script src="langues.js"></script>
+<script src="langues-ui.js"></script>
+<script src="jeu.js"></script>
+</body>
+</html>
